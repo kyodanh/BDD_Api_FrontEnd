@@ -23,4 +23,14 @@ public class LoginPages {
         element = driver.findElement(By.id("submit"));
         return element;
     }
+
+    public static WebElement txt_thong_bao_sai(WebDriver driver) {
+        element = driver.findElement(By.id("error"));
+        return element;
+    }
+
+    public static WebElement btn_signup(WebDriver driver){
+        element = driver.findElement(By.id("signup"));
+        return element;
+    }
 }
