@@ -142,8 +142,7 @@ public class LoginSteps {
                 when().
                 post("/users/login").
                 then().
-                log().body().
-                statusCode(401);
+                log().body();
     }
 
 

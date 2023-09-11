@@ -14,19 +14,19 @@ Feature: Thực hiện login và 1 trang web và kiểm tra API của trang web 
     Given user thực hiện mở trang web
     When Sao khi chuyển tới trang web user thực hiện nhập thông tin username và password vào form
       | username            | password |
-      | danhtest5@gmail.com | 1234567  |
+      | danhtest7@gmail.com | 1234567  |
     And user bấm vào login
     But Nhưng hệ thống báo user sai vì <username_check> và <pass_check> không có trong hệ thống
     And user thực hiện đăng kí thông tin
     And user nhập thông tin đăng kí
       | firstname | lastname | username_signup     | password_signup |
-      | danhne    | danhne   | danhtest5@gmail.com | 1234567         |
+      | danhne    | danhne   | danhtest7@gmail.com | 1234567         |
     And hệ thống hiển thị thông báo thành công <username_check> và <pass_check> được ghi nhận vào server
     Then Hệ thống chuyển qua màn hình conact của user
       | username_moi        | password_moi |
-      | danhtest5@gmail.com | 1234567      |
+      | danhtest7@gmail.com | 1234567      |
 
     Examples:
       | username_check      | pass_check |
-      | danhtest5@gmail.com | 1234567    |
+      | danhtest7@gmail.com | 1234567    |
 
