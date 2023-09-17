@@ -12,4 +12,9 @@ public class ContactListPages {
         element = driver.findElement(By.xpath("/html/body/div/header/h1"));
         return element;
     }
+
+    public static WebElement btn_themmoi(WebDriver driver){
+        element = driver.findElement(By.xpath("//*[@id=\'add-contact\']"));
+        return element;
+    }
 }
