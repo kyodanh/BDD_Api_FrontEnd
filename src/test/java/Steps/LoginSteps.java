@@ -3,10 +3,14 @@ package Steps;
 import Page.ContactListPages;
 import Page.LoginPages;
 import Page.SignupPages;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -16,13 +20,16 @@ import static io.restassured.RestAssured.given;
 public class LoginSteps {
 
     public static WebDriver driver = StepUpSteps.driver;
+    public static ExtentReports report = StepUpSteps.report;
+    public static ExtentTest logger = StepUpSteps.logger;
 
     @Given("user thực hiện mở trang web")
     public void user_thực_hiện_mở_trang_web() {
+        logger = report.createTest("user thực hiện mở trang web");
         // Write code here that turns the phrase above into concrete actions
-
         this.driver = StepUpSteps.driver;
         driver.get("https://thinking-tester-contact-list.herokuapp.com/");
+        logger.pass("Navigated to the specified URL");
     }
 
     @When("Sao khi chuyển tới trang web user thực hiện nhập thông tin username và password vào form")
@@ -55,6 +62,7 @@ public class LoginSteps {
                 log().all().
                 extract().path("token").toString();
         System.out.println("Token is :" + token);
+        logger.pass("Token is :" + token);
         ///////////////////////
         try {
             Thread.sleep(1500);
@@ -68,6 +76,7 @@ public class LoginSteps {
         // Write code here that turns the phrase above into concrete actions
         if (ContactListPages.txt_contact(driver).isDisplayed() == true) {
             System.out.println(ContactListPages.txt_contact(driver).getText());
+            logger.pass(ContactListPages.txt_contact(driver).getText());
         } else {
             Assert.fail("Hệ thống đăng nhập không thành công");
         }

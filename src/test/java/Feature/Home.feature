@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh sách
 
   Background: User thực hiện đăng nhập vào trang web

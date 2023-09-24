@@ -5,7 +5,7 @@ import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "D:\\java\\BDD_Api_FrontEnd\\src\\test\\java\\Feature\\Login.feature",
+@CucumberOptions(features = ".\\src\\test\\java\\Feature\\Login.feature",
         glue = {"Steps"},
 //        tags = "@Smoke",
         monochrome=true,
