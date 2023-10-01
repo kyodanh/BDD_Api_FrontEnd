@@ -5,31 +5,42 @@ import Page.LoginPages;
 import Page.SignupPages;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.*;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
-import static io.restassured.RestAssured.baseURI;
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
+import static org.jsoup.nodes.Entities.EscapeMode.base;
 
 public class LoginSteps {
 
     public static WebDriver driver = StepUpSteps.driver;
-    public static ExtentReports report = StepUpSteps.report;
-    public static ExtentTest logger = StepUpSteps.logger;
+
+
+    public String getBase64Screenshot(){
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+    }
 
     @Given("user thực hiện mở trang web")
     public void user_thực_hiện_mở_trang_web() {
-        logger = report.createTest("user thực hiện mở trang web");
         // Write code here that turns the phrase above into concrete actions
         this.driver = StepUpSteps.driver;
         driver.get("https://thinking-tester-contact-list.herokuapp.com/");
-        logger.pass("Navigated to the specified URL");
+        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
     }
 
     @When("Sao khi chuyển tới trang web user thực hiện nhập thông tin username và password vào form")
@@ -62,7 +73,6 @@ public class LoginSteps {
                 log().all().
                 extract().path("token").toString();
         System.out.println("Token is :" + token);
-        logger.pass("Token is :" + token);
         ///////////////////////
         try {
             Thread.sleep(1500);
@@ -72,11 +82,14 @@ public class LoginSteps {
     }
 
     @Then("Hệ thống chuyển qua màn hình conact")
-    public void hệ_thống_chuyển_qua_màn_hình_conact() {
+    public void hệ_thống_chuyển_qua_màn_hình_conact(){
         // Write code here that turns the phrase above into concrete actions
         if (ContactListPages.txt_contact(driver).isDisplayed() == true) {
             System.out.println(ContactListPages.txt_contact(driver).getText());
-            logger.pass(ContactListPages.txt_contact(driver).getText());
+//            scenario.log(Status.PASS,"Test Pass");
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, ContactListPages.txt_contact(driver).getText());
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+//            ExtentCucumberAdapter.getCurrentStep().addScreenCaptureFromPath("image/png").log(Status.PASS,MediaEntityBuilder.createScreenCaptureFromPath("image/png").build());
         } else {
             Assert.fail("Hệ thống đăng nhập không thành công");
         }
@@ -106,13 +119,14 @@ public class LoginSteps {
                 extract().path("token").toString();
         System.out.println("Token is :" + token);
         ///////////////////////////////////////////////
-        given().
+        String data = given().
                 header("Content-Type", "application/json").
                 header("Authorization", "Bearer " + token).
                 when().
                 get("/contacts").
                 then().
-                log().all();
+                log().body().toString();
+        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, "Print"+data);
     }
 
 
