@@ -7,11 +7,10 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "D:\\java\\BDD_Api_FrontEnd\\src\\test\\java\\Feature\\Home.feature",
         glue = {"Steps"},
-//        tags = "@Smoke",
+        tags = "@tag2",
         monochrome=true,
-        plugin = {"pretty", "junit:target/JUnitReports/report.xml",
-                "json:target/JSONReports/report.json",
-                "pretty", "html:target/cucumber-reports.html"})
+//        dryRun = true,
+        plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"})
 
 public class TestRunner_Home {
 }

@@ -17,4 +17,14 @@ public class ContactListPages {
         element = driver.findElement(By.xpath("//*[@id=\'add-contact\']"));
         return element;
     }
+
+    public static WebElement clm_name(WebDriver driver,String name){
+        element = driver.findElement(By.xpath("//td[contains(.,'"+name+"')]"));
+        return element;
+    }
+
+    public static WebElement dong(WebDriver driver,int dong){
+        element = driver.findElement(By.xpath("//tr["+dong+"]/td[2]"));
+        return element;
+    }
 }

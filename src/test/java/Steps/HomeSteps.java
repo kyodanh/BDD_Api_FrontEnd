@@ -2,12 +2,16 @@ package Steps;
 
 import Page.AddContactPages;
 import Page.ContactListPages;
+import Page.DetailsPages;
 import Page.LoginPages;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter;
 import com.jayway.jsonpath.JsonPath;
 import io.cucumber.java.en.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.testng.Assert;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +22,12 @@ import static io.restassured.RestAssured.given;
 public class HomeSteps {
 
     public static WebDriver driver = StepUpSteps.driver;
+
+    public String getBase64Screenshot() {
+        this.driver = StepUpSteps.driver;
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+    }
+
 
     @Given("User thực hiện truy cập vào web")
     public void user_thực_hiện_truy_cập_vào_web() {
@@ -47,11 +57,11 @@ public class HomeSteps {
     public void hệ_thống_chuyển_sang_màn_hình_danh_sách() {
         // Write code here that turns the phrase above into concrete actions
         this.driver = StepUpSteps.driver;
-        if(ContactListPages.txt_contact(driver).isDisplayed()==true){
+        if (ContactListPages.txt_contact(driver).isDisplayed() == true) {
             System.out.println("-----------------------");
             System.out.println("Đăng nhập thành công");
             System.out.println("-----------------------");
-        }else{
+        } else {
             System.out.println("-----------------------");
             System.out.println("Đăng nhập thất bại");
             System.out.println("-----------------------");
@@ -59,17 +69,15 @@ public class HomeSteps {
     }
 
 
-
-
     @Given("Khi user đăng nhập thành công")
     public void khi_user_đăng_nhập_thành_công() {
         // Write code here that turns the phrase above into concrete actions
         this.driver = StepUpSteps.driver;
-        if(ContactListPages.txt_contact(driver).isDisplayed()==true){
+        if (ContactListPages.txt_contact(driver).isDisplayed() == true) {
             System.out.println("-----------------------");
             System.out.println("Đăng nhập thành công");
             System.out.println("-----------------------");
-        }else{
+        } else {
             System.out.println("-----------------------");
             System.out.println("Đăng nhập thất bại");
             System.out.println("-----------------------");
@@ -112,8 +120,8 @@ public class HomeSteps {
         String token = given().
                 header("Content-Type", "application/json").
                 body("{\n" +
-                        "    \"email\": \""+data_check.get(int1).get("username")+"\",\n" +
-                        "    \"password\": \""+data_check.get(int1).get("password")+"\"\n" +
+                        "    \"email\": \"" + data_check.get(int1).get("username") + "\",\n" +
+                        "    \"password\": \"" + data_check.get(int1).get("password") + "\"\n" +
                         "}").
                 when().
                 post("/users/login").
@@ -143,8 +151,10 @@ public class HomeSteps {
             System.out.println("got interrupted!");
         }
     }
+
     @When("hệ thống chuyển qua màn hình thêm mới và user nhập thông tin")
     public void hệ_thống_chuyển_qua_màn_hình_thêm_mới_và_user_nhập_thông_tin(io.cucumber.datatable.DataTable dataTable) {
+        this.driver = StepUpSteps.driver;
         List<Map<String, String>> data_input = dataTable.asMaps(String.class, String.class);
         AddContactPages.firstName(driver).sendKeys(data_input.get(0).get("firstName"));
         AddContactPages.lastName(driver).sendKeys(data_input.get(0).get("lastName"));
@@ -177,6 +187,7 @@ public class HomeSteps {
     @When("hệ thống trả về màn hình danh sách")
     public void hệ_thống_trả_về_màn_hình_danh_sách() {
         // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
         System.out.println("----------table-------------");
         WebElement Table = driver.findElement(By.xpath("//*[@id=\"myTable\"]"));
         List<WebElement> rows_table = Table.findElements(By.tagName("tr"));
@@ -197,6 +208,7 @@ public class HomeSteps {
     @When("user kiểm tra danh sách contact")
     public void user_kiểm_tra_danh_sách_contact() {
         // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
         System.out.println("----------table_luc_đau-------------");
         WebElement Table = driver.findElement(By.xpath("//*[@id=\"myTable\"]"));
         List<WebElement> rows_table = Table.findElements(By.tagName("tr"));
@@ -212,15 +224,17 @@ public class HomeSteps {
         }
         System.out.println("----------table_luc_đau-------------");
     }
+
     @When("User nhập thông tin mới bằng API {int}")
     public void user_nhập_thông_tin_mới_bằng_api(Integer int1, io.cucumber.datatable.DataTable dataTable) {
+        this.driver = StepUpSteps.driver;
         List<Map<String, String>> data_check = dataTable.asMaps(String.class, String.class);
         baseURI = "https://thinking-tester-contact-list.herokuapp.com";
         String token = given().
                 header("Content-Type", "application/json").
                 body("{\n" +
-                        "    \"email\": \""+data_check.get(int1).get("username")+"\",\n" +
-                        "    \"password\": \""+data_check.get(int1).get("password")+"\"\n" +
+                        "    \"email\": \"" + data_check.get(int1).get("username") + "\",\n" +
+                        "    \"password\": \"" + data_check.get(int1).get("password") + "\"\n" +
                         "}").
                 when().
                 post("/users/login").
@@ -229,21 +243,21 @@ public class HomeSteps {
                 extract().path("token").toString();
         System.out.println("Token is :" + token);
         ///////////////////////////////////////////////
-        String reponse= given().
+        String reponse = given().
                 header("Content-Type", "application/json").
                 header("Authorization", "Bearer " + token).
                 body("{\n" +
-                        "    \"firstName\": \""+data_check.get(int1).get("firstName")+"\",\n" +
-                        "    \"lastName\": \""+data_check.get(int1).get("lastName")+"\",\n" +
-                        "    \"birthdate\": \""+data_check.get(int1).get("birthdate")+"\",\n" +
-                        "    \"email\": \""+data_check.get(int1).get("email")+"\",\n" +
-                        "    \"phone\": \""+data_check.get(int1).get("phone")+"\",\n" +
-                        "    \"street1\": \""+data_check.get(int1).get("street1")+"\",\n" +
-                        "    \"street2\": \""+data_check.get(int1).get("street2")+"\",\n" +
-                        "    \"city\": \""+data_check.get(int1).get("city")+"\",\n" +
-                        "    \"stateProvince\": \""+data_check.get(int1).get("stateProvince")+"\",\n" +
-                        "    \"postalCode\": \""+data_check.get(int1).get("postalCode")+"\",\n" +
-                        "    \"country\": \""+data_check.get(int1).get("country")+"\"\n" +
+                        "    \"firstName\": \"" + data_check.get(int1).get("firstName") + "\",\n" +
+                        "    \"lastName\": \"" + data_check.get(int1).get("lastName") + "\",\n" +
+                        "    \"birthdate\": \"" + data_check.get(int1).get("birthdate") + "\",\n" +
+                        "    \"email\": \"" + data_check.get(int1).get("email") + "\",\n" +
+                        "    \"phone\": \"" + data_check.get(int1).get("phone") + "\",\n" +
+                        "    \"street1\": \"" + data_check.get(int1).get("street1") + "\",\n" +
+                        "    \"street2\": \"" + data_check.get(int1).get("street2") + "\",\n" +
+                        "    \"city\": \"" + data_check.get(int1).get("city") + "\",\n" +
+                        "    \"stateProvince\": \"" + data_check.get(int1).get("stateProvince") + "\",\n" +
+                        "    \"postalCode\": \"" + data_check.get(int1).get("postalCode") + "\",\n" +
+                        "    \"country\": \"" + data_check.get(int1).get("country") + "\"\n" +
                         "}").
                 when().
                 post("/contacts").
@@ -253,12 +267,162 @@ public class HomeSteps {
         System.out.println(reponse);
 
 
-
     }
+
     @When("user reload lại trang")
     public void user_reload_lại_trang() {
+        this.driver = StepUpSteps.driver;
         // Write code here that turns the phrase above into concrete actions
         driver.navigate().refresh();
     }
+
+    @When("user thực hiện chọn đòng để xem chi tiết contact {int}")
+    public void user_thực_hiện_chọn_đòng_để_xem_chi_tiết_contact(Integer int1) {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        ContactListPages.dong(driver, int1).click();
+    }
+
+    @When("hệ thống chuyển qua màn hình chi tiết")
+    public void hệ_thống_chuyển_qua_màn_hình_chi_tiết() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        if (DetailsPages.txt_detail(driver).isDisplayed() == true) {
+            System.out.println("hệ thống chuyển qua màn hình " + DetailsPages.txt_detail(driver).getText());
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, ContactListPages.txt_contact(driver).getText());
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+        } else {
+            Assert.fail("loi");
+            ExtentCucumberAdapter.getCurrentStep().log(Status.FAIL, "hệ thống không chuyển qua màn hình detail");
+            ExtentCucumberAdapter.getCurrentStep().log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+        }
+    }
+
+    @Then("hệ thống hiển thị thông tin chi tiết")
+    public void hệ_thống_hiển_thị_thông_tin_chi_tiết() {
+        // Write code here that turns the phrase above into concrete actions
+        //////////////////////////////////////
+        try {
+            Thread.sleep(2500);
+        } catch (InterruptedException e) {
+            System.out.println("got interrupted!");
+        }
+        //////////////////////////////////////
+        if (DetailsPages.txt_detail(driver).isDisplayed() == true) {
+            System.out.println("hệ thống chuyển qua màn hình " + DetailsPages.txt_detail(driver).getText());
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, DetailsPages.detail(driver).getText());
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+        } else {
+            Assert.fail("loi");
+            ExtentCucumberAdapter.getCurrentStep().log(Status.FAIL, "Hệ thống hiển thị thông tin");
+            ExtentCucumberAdapter.getCurrentStep().log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+        }
+    }
+
+
+    @When("hệ thống hiển thị thông tin chi tiết ứng với người dùng vừa chọn")
+    public void hệ_thống_hiển_thị_thông_tin_chi_tiết_ứng_với_người_dùng_vừa_chọn() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        if (DetailsPages.txt_detail(driver).isDisplayed() == true) {
+            System.out.println("hệ thống chuyển qua màn hình " + DetailsPages.txt_detail(driver).getText());
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, DetailsPages.detail(driver).getText());
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+        } else {
+            Assert.fail("loi");
+            ExtentCucumberAdapter.getCurrentStep().log(Status.FAIL, "hệ thống không chuyển qua màn hình detail");
+            ExtentCucumberAdapter.getCurrentStep().log(Status.FAIL, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+        }
+    }
+
+    @When("User thực hiện vào API với user")
+    public void user_thực_hiện_vào_api_với_user(io.cucumber.datatable.DataTable dataTable) {
+        this.driver = StepUpSteps.driver;
+        List<Map<String,String>> logindata = dataTable.asMaps(String.class,String.class);
+
+        baseURI ="https://thinking-tester-contact-list.herokuapp.com";
+        given().
+                header("Content-Type", "application/json").
+                body("{\n" +
+                        "    \"email\": \""+logindata.get(0).get("username")+"\",\n" +
+                        "    \"password\": \""+logindata.get(0).get("passworđ")+"\"\n" +
+                        "}").
+                when().
+                post("/users/login").
+                then().
+                log().
+                body().extract().path("\"token\"");
+    }
+
+    @Then("User thực hiện vào API get contact list")
+    public void user_thực_hiện_vào_api_get_contact_list() {
+        // Write code here that turns the phrase above into concrete actions
+        baseURI ="https://thinking-tester-contact-list.herokuapp.com";
+        String token = given().
+                header("Content-Type", "application/json").
+                body("{\n" +
+                        "    \"email\": \"kyodanh@gmail.com\",\n" +
+                        "    \"password\": \"1234567\"\n" +
+                        "}").
+                when().
+                post("/users/login").
+                then().
+                log().
+                body().extract().path("\"token\"").toString();
+        ////////////////////////////////////////////////////////
+        String data = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token).
+                when().
+                get("/contacts").
+                then().
+                log().body().toString();
+        System.out.println("-------------------------------------");
+        System.out.println(data);
+        System.out.println("-------------------------------------");
+        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, "Print"+data);
+    }
+
+    @Then("User thực hiện xuất body ứng với dòng user chọn")
+    public void user_thực_hiện_xuất_body_ứng_với_dòng_user_chọn() {
+        // Write code here that turns the phrase above into concrete actions
+        baseURI ="https://thinking-tester-contact-list.herokuapp.com";
+        String token = given().
+                header("Content-Type", "application/json").
+                body("{\n" +
+                        "    \"email\": \"kyodanh@gmail.com\",\n" +
+                        "    \"password\": \"1234567\"\n" +
+                        "}").
+                when().
+                post("/users/login").
+                then().
+                log().
+                body().extract().path("\"token\"").toString();
+        ////////////////////////////////////////////////////////
+        String data = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token).
+                when().
+                get("/contacts").
+                then().
+                log().body().extract().jsonPath().getString("[0]._id");
+
+        System.out.println("-------------------------------------");
+        System.out.println(data);
+        System.out.println("-------------------------------------");
+        //////////////////////////////////////////////////////////
+        String data_contact = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token).
+                when().
+                get("/contacts/"+data+"").
+                then().
+                log().body().toString();
+        System.out.println("-------------------------------------");
+        System.out.println("user_1 "+data_contact);
+        System.out.println("-------------------------------------");
+
+    }
+
 
 }
