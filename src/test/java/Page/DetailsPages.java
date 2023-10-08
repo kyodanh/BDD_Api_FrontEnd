@@ -19,4 +19,11 @@ public class DetailsPages {
         return element;
     }
 
+    public static WebElement edit_btn(WebDriver driver){
+        element = driver.findElement(By.id("edit-contact"));
+        return element;
+    }
+
+
+
 }

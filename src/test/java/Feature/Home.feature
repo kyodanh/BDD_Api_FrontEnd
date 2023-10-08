@@ -64,16 +64,38 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
       | 1   |
 
 
+
   @tag2
-  Scenario Outline: user xem thông tin chi tiết contact
+  Scenario Outline: user xem thông tin chi tiết contact vaf thực hiện chỉnh sửa contact
     Given Khi user đăng nhập thành công
     When user thực hiện chọn đòng để xem chi tiết contact <row>
     And hệ thống hiển thị thông tin chi tiết ứng với người dùng vừa chọn
     And User thực hiện vào API với user
-    |username|passworđ|
-    | kyodanh@gmail.com | 1234567  |
+      |username|passworđ|
+      | kyodanh@gmail.com | 1234567  |
     Then User thực hiện vào API get contact list
     Then User thực hiện xuất body ứng với dòng user chọn
+
+    Examples:
+      | row |
+      | 1   |
+
+
+
+  @tag3
+  Scenario Outline: user xem thông tin chi tiết contact
+    Given Khi user đăng nhập thành công
+    When user thực hiện chọn đòng để xem chi tiết contact <row>
+    And hệ thống hiển thị thông tin chi tiết ứng với người dùng vừa chọn
+    And user thực hiện bấm vào button edit
+    And user nhập thông tin chỉnh sửa
+      | username          | password | firstName | lastName | birthdate  | email          | phone      | street1         | street2            | city        | stateProvince | postalCode | country |
+      | kyodanh@gmail.com | 1234567  | test_14   | danh     | 1998/03/08 | danh@gmail.com | 0942058905 | thích quảng đức | phường chánh nghĩa | Thu Dau Mot | Bình Dương    | 12345      | VietNam |
+   And user bấm vào button submit
+    And User thực hiện vào API với kiểm tra thông tin đã chỉnh sửa
+      |username|passworđ|
+      | kyodanh@gmail.com | 1234567  |
+    Then Hệ thống hiển thị thông tin chỉnh sửa kèm với thông tin chỉnh sửa API
 
     Examples:
       | row |
