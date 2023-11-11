@@ -5,9 +5,9 @@ import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "D:\\java\\BDD_Api_FrontEnd\\src\\test\\java\\Feature\\Home.feature",
+@CucumberOptions(features = ".\\src\\test\\java\\Feature\\Home.feature",
         glue = {"Steps"},
-        tags = "@tag3",
+        tags = "@tag5",
         monochrome=true,
 //        dryRun = true,
         plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"})

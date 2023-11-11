@@ -25,6 +25,24 @@ public class HomeSteps {
         return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
     }
 
+    public String token(){
+        this.driver = StepUpSteps.driver;
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        ///////////////////////////////////Login
+        String token = given().
+                header("Content-Type", "application/json").
+                body("{\n" +
+                        "    \"email\": \"kyodanh@gmail.com\",\n" +
+                        "    \"password\": \"1234567\"\n" +
+                        "}").
+                when().
+                post("/users/login").
+                then().
+                log().
+                body().extract().path("\"token\"").toString();
+        return token;
+    }
+
 
     @Given("User thực hiện truy cập vào web")
     public void user_thực_hiện_truy_cập_vào_web() {
@@ -354,6 +372,7 @@ public class HomeSteps {
     @Then("User thực hiện vào API get contact list")
     public void user_thực_hiện_vào_api_get_contact_list() {
         // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
         baseURI = "https://thinking-tester-contact-list.herokuapp.com";
         String token = given().
                 header("Content-Type", "application/json").
@@ -383,6 +402,7 @@ public class HomeSteps {
     @Then("User thực hiện xuất body ứng với dòng user chọn")
     public void user_thực_hiện_xuất_body_ứng_với_dòng_user_chọn() {
         // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
         baseURI = "https://thinking-tester-contact-list.herokuapp.com";
         String token = given().
                 header("Content-Type", "application/json").
@@ -425,6 +445,7 @@ public class HomeSteps {
     @When("user thực hiện bấm vào button edit")
     public void user_thực_hiện_bấm_vào_button_edit() {
         // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
         DetailsPages.edit_btn(driver).click();
         try {
             Thread.sleep(1500);
@@ -469,7 +490,8 @@ public class HomeSteps {
     @When("user bấm vào button submit")
     public void user_bấm_vào_button_submit() {
         // Write code here that turns the phrase above into concrete actions
-       EditPages.submit(driver).click();
+        this.driver = StepUpSteps.driver;
+        EditPages.submit(driver).click();
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -479,8 +501,9 @@ public class HomeSteps {
 
     @When("User thực hiện vào API với kiểm tra thông tin đã chỉnh sửa")
     public void user_thực_hiện_vào_api_với_kiểm_tra_thông_tin_đã_chỉnh_sửa(io.cucumber.datatable.DataTable dataTable) {
+        this.driver = StepUpSteps.driver;
         baseURI = "https://thinking-tester-contact-list.herokuapp.com";
-       ///////////////////////////////////Login
+        ///////////////////////////////////Login
         String token = given().
                 header("Content-Type", "application/json").
                 body("{\n" +
@@ -519,6 +542,7 @@ public class HomeSteps {
     @Then("Hệ thống hiển thị thông tin chỉnh sửa kèm với thông tin chỉnh sửa API")
     public void hệ_thống_hiển_thị_thông_tin_chỉnh_sửa_kèm_với_thông_tin_chỉnh_sửa_api() {
         // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
         baseURI = "https://thinking-tester-contact-list.herokuapp.com";
         ///////////////////////////////////Login
         String token = given().
@@ -555,6 +579,191 @@ public class HomeSteps {
         System.out.println("hệ thống chuyển qua màn hình " + DetailsPages.txt_detail(driver).getText());
         ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, DetailsPages.detail(driver).getText());
         ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+    }
+
+    @When("user thực hiện bấm vào button xóa")
+    public void user_thực_hiện_bấm_vào_button_xóa() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        DetailsPages.btn_xoa(driver).click();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            System.out.println("got interrupted!");
+        }
+    }
+
+    @When("Hệ thông hiển thị pop up và user chọn có")
+    public void hệ_thông_hiển_thị_pop_up_và_user_chọn_có() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        Alert alert = driver.switchTo().alert();
+        driver.switchTo().alert();
+        alert.accept();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            System.out.println("got interrupted!");
+        }
+    }
+
+    @Then("Hệ thống hiển thị thông báo thành công và xóa contact ra khỏi hệ thống")
+    public void hệ_thống_hiển_thị_thông_báo_thành_công_và_xóa_contact_ra_khỏi_hệ_thống() {
+        // Write code here that turns the phrase above into concrete actions
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            System.out.println("got interrupted!");
+        }
+    }
+
+
+//    @Given("Khi user đăng nhập vào API {int}")
+//    public void khi_user_đăng_nhập_vào_api(Integer int1, io.cucumber.datatable.DataTable dataTable) {
+//        this.driver = StepUpSteps.driver;
+//        if (ContactListPages.txt_contact(driver).isDisplayed() == true) {
+//            System.out.println("-----------------------");
+//            System.out.println("Đăng nhập thành công");
+//            System.out.println("-----------------------");
+//        } else {
+//            System.out.println("-----------------------");
+//            System.out.println("Đăng nhập thất bại");
+//            System.out.println("-----------------------");
+//        }
+//    }
+
+    @When("Hệ thống hiển thị token của user")
+    public void hệ_thống_hiển_thị_token_của_user() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        // Write code here that turns the phrase above into concrete actions
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        String token = given().
+                header("Content-Type", "application/json").
+                body("{\n" +
+                        "    \"email\": \"kyodanh@gmail.com\",\n" +
+                        "    \"password\": \"1234567\"\n" +
+                        "}").
+                when().
+                post("/users/login").
+                then().
+                log().body().
+                extract().path("token").toString();
+        System.out.println("Token is :" + token);
+        if(token.equals(token)){
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS,"Token is :" + token);
+        }else{
+            ExtentCucumberAdapter.getCurrentStep().log(Status.FAIL,"đăng nhập thất bại");
+        }
+
+    }
+
+    @When("user thực hiện call API danh sách")
+    public void user_thực_hiện_call_api_danh_sách() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        ///////////////////////////////////Login
+        String token = given().
+                header("Content-Type", "application/json").
+                body("{\n" +
+                        "    \"email\": \"kyodanh@gmail.com\",\n" +
+                        "    \"password\": \"1234567\"\n" +
+                        "}").
+                when().
+                post("/users/login").
+                then().
+                log().
+                body().extract().path("\"token\"").toString();
+        /////////////////////////////////Contact
+        String data = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token).
+                when().
+                get("/contacts").
+                then().
+                log().body().toString();
+        //////////////////////////////////Detail contact
+        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS,"Danh sách contact" + data);
+    }
+
+    @When("user thực hiện xem chi tiết contact")
+    public void user_thực_hiện_xem_chi_tiết_contact() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        ///////////////////////////////////Login
+        String token = given().
+                header("Content-Type", "application/json").
+                body("{\n" +
+                        "    \"email\": \"kyodanh@gmail.com\",\n" +
+                        "    \"password\": \"1234567\"\n" +
+                        "}").
+                when().
+                post("/users/login").
+                then().
+                log().
+                body().extract().path("\"token\"").toString();
+        /////////////////////////////////Contact
+        String data = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token).
+                when().
+                get("/contacts").
+                then().
+                log().body().extract().jsonPath().getString("[0]._id");
+        //////////////////////////////////Detail contact
+        String data_contact = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token).
+                when().
+                get("/contacts/" + data).
+                then().
+                log().body().toString();
+        System.out.println("-------------------------------------");
+        System.out.println("user_1 " + data_contact);
+        System.out.println("-------------------------------------");
+    }
+
+    @When("user thực hiện xóa contact bàng API")
+    public void user_thực_hiện_xóa_contact_bàng_api() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        /////////////////////////////////Contact
+        String data = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token()).
+                when().
+                get("/contacts").
+                then().
+                log().body().extract().jsonPath().getString("[0]._id");
+        //////////////////////////////////Delete contact
+        String data_delete = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token()).
+                when().
+                delete("/contacts/"+data).
+                then().
+                log().body().toString();
+        System.out.println("boddy" + data_delete);
+
+    }
+
+    @Then("contact bị xóa và khi call API xem chi tiết hệ thống không hiển thị contact")
+    public void contact_bị_xóa_và_khi_call_api_xem_chi_tiết_hệ_thống_không_hiển_thị_contact() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        /////////////////////////////////Contact
+        String data = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token()).
+                when().
+                get("/contacts").
+                then().
+                log().body().toString();
+        System.out.println("boddy" + data);
     }
 
 

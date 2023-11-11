@@ -24,6 +24,11 @@ public class DetailsPages {
         return element;
     }
 
+    public static WebElement btn_xoa(WebDriver driver){
+        element = driver.findElement(By.xpath("//button[contains(.,'Delete Contact')]"));
+        return element;
+    }
+
 
 
 }
