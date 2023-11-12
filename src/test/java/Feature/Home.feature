@@ -7,7 +7,7 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
       | kyodanh@gmail.com | 1234567  |
     Then hệ thống chuyển sang màn hình danh sách
 
-
+ @test
   Scenario Outline: user kiểm tra bảng danh sách khi người dùng đăng nhập thành công
     Given Khi user đăng nhập thành công
     When  Hệ thống chuyển qua màn hình danh sách user
