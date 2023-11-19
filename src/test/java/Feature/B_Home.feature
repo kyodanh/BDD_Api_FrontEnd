@@ -7,7 +7,7 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
       | kyodanh@gmail.com | 1234567  |
     Then hệ thống chuyển sang màn hình danh sách
 
- @Test_jenkin
+  @Res
   Scenario Outline: user kiểm tra bảng danh sách khi người dùng đăng nhập thành công
     Given Khi user đăng nhập thành công
     When  Hệ thống chuyển qua màn hình danh sách user
@@ -20,7 +20,7 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
       | 0   |
 
 
-  @Test_jenkin_2
+  @Res
   Scenario Outline: user thêm mới danh sách vào bảng
     Given Khi user đăng nhập thành công
     When  user bấm vào nút thêm mới
@@ -38,7 +38,7 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
       | 0   |
 
 
-  @Test_jenkin_3
+  @Res
   Scenario Outline: user thêm mới danh sách vào bảng bằng API
     Given Khi user đăng nhập thành công
     When  user kiểm tra danh sách contact
@@ -55,8 +55,7 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
       | 0   |
 
 
-
-  @Test_jenkin_4
+  @Res
   Scenario Outline: user xem thông tin chi tiết contact
     Given Khi user đăng nhập thành công
     When  user thực hiện chọn đòng để xem chi tiết contact <row>
@@ -68,7 +67,7 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
       | 1   |
 
 
-  @Test_jenkin_5
+  @Res
   Scenario Outline: user xem thông tin chi tiết contact vaf thực hiện chỉnh sửa contact
     Given Khi user đăng nhập thành công
     When user thực hiện chọn đòng để xem chi tiết contact <row>
@@ -84,7 +83,7 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
       | 1   |
 
 
-  @Test_jenkin_5
+  @Res
   Scenario Outline: user xem thông tin chi tiết contact
     Given Khi user đăng nhập thành công
     When user thực hiện chọn đòng để xem chi tiết contact <row>
@@ -103,8 +102,7 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
       | row |
       | 1   |
 
-
-  @Test_jenkin_5
+  @Res
   Scenario Outline: user xem thông tin chi tiết contact và thực hiện thông tin user
     Given Khi user đăng nhập thành công
     When user thực hiện chọn đòng để xem chi tiết contact <row>
@@ -118,7 +116,7 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
       | 1   |
 
 
-  @Test_jenkin_5
+  @Res
   Scenario: user thực hiện xóa contact thông tin dựa vào API
     Given Khi user đăng nhập thành công
     When Hệ thống hiển thị token của user

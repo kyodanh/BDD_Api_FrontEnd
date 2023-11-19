@@ -33,4 +33,9 @@ public class SignupPages {
         return element;
     }
 
+    public static WebElement txt_thongbao_1(WebDriver driver){
+        element = driver.findElement(By.id("error"));
+        return element;
+    }
+
 }

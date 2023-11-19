@@ -5,7 +5,7 @@ import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = ".\\src\\test\\java\\Feature\\Home.feature",
+@CucumberOptions(features = ".\\src\\test\\java\\Feature\\B_Home.feature",
         glue = {"Steps"},
 //        tags = "@tag5",
         monochrome=true,

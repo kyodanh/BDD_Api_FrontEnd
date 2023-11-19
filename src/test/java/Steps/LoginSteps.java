@@ -4,11 +4,14 @@ import Page.ContactListPages;
 import Page.LoginPages;
 import Page.SignupPages;
 import io.cucumber.java.en.*;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
@@ -17,10 +20,12 @@ public class LoginSteps {
 
     public static WebDriver driver = StepUpSteps.driver;
 
+
+
+
     @Given("user thực hiện mở trang web")
     public void user_thực_hiện_mở_trang_web() {
-        // Write code here that turns the phrase above into concrete actions
-
+        // Write code here that turns the phrase above into concrete action
         this.driver = StepUpSteps.driver;
         driver.get("https://thinking-tester-contact-list.herokuapp.com/");
     }
@@ -154,10 +159,11 @@ public class LoginSteps {
 
     @When("user nhập thông tin đăng kí")
     public void user_nhập_thông_tin_đăng_kí(io.cucumber.datatable.DataTable dataTable) {
+        int randomNumber = generateRandomNumber(1, 10000);
         List<Map<String, String>> signup_data = dataTable.asMaps(String.class, String.class);
-        SignupPages.firstName(driver).sendKeys(signup_data.get(0).get("firstname"));
-        SignupPages.lastName(driver).sendKeys(signup_data.get(0).get("lastname"));
-        SignupPages.username(driver).sendKeys(signup_data.get(0).get("username_signup"));
+        SignupPages.firstName(driver).sendKeys(signup_data.get(0).get("firstname")+randomNumber);
+        SignupPages.lastName(driver).sendKeys(signup_data.get(0).get("lastname")+randomNumber);
+        SignupPages.username(driver).sendKeys(signup_data.get(0).get("username_signup")+randomNumber+"@gmail.coms");
         SignupPages.password(driver).sendKeys(signup_data.get(0).get("password_signup"));
         try {
             Thread.sleep(1500);
@@ -165,6 +171,10 @@ public class LoginSteps {
             System.out.println("got interrupted!");
         }
         SignupPages.submit(driver).click();
+    }
+
+    private int generateRandomNumber(int min, int max) {
+        return min + (int) (Math.random() * ((max - min) + 1));
     }
 
     @When("^hệ thống hiển thị thông báo thành công (.*) và (.*) được ghi nhận vào server$")
@@ -217,6 +227,44 @@ public class LoginSteps {
                 get("/contacts").
                 then().
                 log().body();
+    }
+
+
+    @When("User thực hiện bấm vào nút đăng kí")
+    public void user_thực_hiện_bấm_vào_nút_đăng_kí() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        LoginPages.btn_signup(driver).click();
+    }
+
+    @When("user nhập thông tin đăng kí {int}")
+    public void user_nhập_thông_tin_đăng_kí(Integer int1, io.cucumber.datatable.DataTable dataTable) {
+        this.driver = StepUpSteps.driver;
+        List<Map<String, String>> signup_data = dataTable.asMaps(String.class, String.class);
+//        SignupPages.firstName(driver).sendKeys(signup_data.get(int1).get("firstname"));
+//        SignupPages.lastName(driver).sendKeys(signup_data.get(int1).get("lastname"));
+        SignupPages.username(driver).sendKeys(signup_data.get(int1).get("username_signup"));
+        SignupPages.password(driver).sendKeys(signup_data.get(int1).get("password_signup"));
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            System.out.println("got interrupted!");
+        }
+        SignupPages.submit(driver).click();
+    }
+
+    @Then("Hệ thống hiển thị thông báo cần nhập f_name và l_name")
+    public void hệ_thống_hiển_thị_thông_báo_cần_nhập_f_name_và_l_name() {
+        this.driver = StepUpSteps.driver;
+        // Write code here that turns the phrase above into concrete actions
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            System.out.println("got interrupted!");
+        }
+        System.out.println("-----------------------");
+        System.out.println(SignupPages.txt_thongbao_1(driver).getText());
+        System.out.println("-----------------------");
     }
 
 }
