@@ -118,6 +118,7 @@ public class HomeSteps {
             }
         }
         System.out.println("----------table-------------");
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
         //////////////////////////////////////
         try {
             Thread.sleep(1500);
@@ -216,6 +217,7 @@ public class HomeSteps {
                 System.out.println((((("Cell Value Of row number " + row) + " and column number ") + column) + " Is ") + celltext);
             }
         }
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
         System.out.println("----------table-------------");
     }
 
@@ -237,6 +239,7 @@ public class HomeSteps {
                 System.out.println((((("Cell Value Of row number " + row) + " and column number ") + column) + " Is ") + celltext);
             }
         }
+        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
         System.out.println("----------table_luc_đau-------------");
     }
 
@@ -289,6 +292,7 @@ public class HomeSteps {
         this.driver = StepUpSteps.driver;
         // Write code here that turns the phrase above into concrete actions
         driver.navigate().refresh();
+        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
     }
 
     @When("user thực hiện chọn đòng để xem chi tiết contact {int}")
@@ -492,6 +496,7 @@ public class HomeSteps {
         // Write code here that turns the phrase above into concrete actions
         this.driver = StepUpSteps.driver;
         EditPages.submit(driver).click();
+        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -610,6 +615,7 @@ public class HomeSteps {
     @Then("Hệ thống hiển thị thông báo thành công và xóa contact ra khỏi hệ thống")
     public void hệ_thống_hiển_thị_thông_báo_thành_công_và_xóa_contact_ra_khỏi_hệ_thống() {
         // Write code here that turns the phrase above into concrete actions
+        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -765,6 +771,15 @@ public class HomeSteps {
                 log().body().toString();
         System.out.println("boddy" + data);
     }
+
+
+    @When("^user thực hiện bấm vào name để xem thông tin chi tiết thông tin (.*)$")
+    public void user_thực_hiện_bấm_vào_name_để_xem_thông_tin_chi_tiết_thông_tin_test_danh(String name) {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        ContactListPages.clm_name(driver,name).click();
+    }
+
 
 
 }

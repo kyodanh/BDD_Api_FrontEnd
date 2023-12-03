@@ -84,7 +84,7 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
 
 
   @Res
-  Scenario Outline: user xem thông tin chi tiết contact
+  Scenario Outline: user xem thông tin chi tiết contact và thưc hiện chỉnh sửa thông tin
     Given Khi user đăng nhập thành công
     When user thực hiện chọn đòng để xem chi tiết contact <row>
     And hệ thống hiển thị thông tin chi tiết ứng với người dùng vừa chọn
@@ -101,6 +101,26 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
     Examples:
       | row |
       | 1   |
+
+  @Res
+  Scenario Outline: user thực hiện chỉnh sửa thông tin
+    Given Khi user đăng nhập thành công
+    When user thực hiện bấm vào name để xem thông tin chi tiết thông tin <name>
+    And hệ thống hiển thị thông tin chi tiết ứng với người dùng vừa chọn
+    And user thực hiện bấm vào button edit
+    And user nhập thông tin chỉnh sửa
+      | username          | password | firstName | lastName | birthdate  | email          | phone      | street1         | street2            | city        | stateProvince | postalCode | country |
+      | kyodanh@gmail.com | 1234567  | test_14   | danh     | 1998/03/08 | danh@gmail.com | 0942058905 | thích quảng đức | phường chánh nghĩa | Thu Dau Mot | Bình Dương    | 12345      | VietNam |
+    And user bấm vào button submit
+    And User thực hiện vào API với kiểm tra thông tin đã chỉnh sửa
+      | username          | passworđ |
+      | kyodanh@gmail.com | 1234567  |
+    Then Hệ thống hiển thị thông tin chỉnh sửa kèm với thông tin chỉnh sửa API
+
+    Examples:
+      | name |
+      | test danh  |
+
 
   @Res
   Scenario Outline: user xem thông tin chi tiết contact và thực hiện thông tin user
