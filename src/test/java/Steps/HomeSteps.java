@@ -581,8 +581,6 @@ public class HomeSteps {
         System.out.println("user_1 " + data_contact);
         System.out.println("-------------------------------------");
         ////////////////////////////////
-        System.out.println("hệ thống chuyển qua màn hình " + DetailsPages.txt_detail(driver).getText());
-        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, DetailsPages.detail(driver).getText());
         ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
     }
 
