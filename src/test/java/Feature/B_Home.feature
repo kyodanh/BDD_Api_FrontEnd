@@ -145,3 +145,6 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
     And user thực hiện xóa contact bàng API
     Then contact bị xóa và khi call API xem chi tiết hệ thống không hiển thị contact
 
+
+
+
