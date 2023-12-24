@@ -1,8 +1,12 @@
 package Steps;
 
 import Page.ContactListPages;
+import Page.DetailsPages;
 import Page.LoginPages;
 import Page.SignupPages;
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -20,7 +24,10 @@ public class LoginSteps {
 
     public static WebDriver driver = StepUpSteps.driver;
 
-
+    public String getBase64Screenshot() {
+        this.driver = StepUpSteps.driver;
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+    }
 
 
     @Given("user thực hiện mở trang web")
@@ -265,6 +272,106 @@ public class LoginSteps {
         System.out.println("-----------------------");
         System.out.println(SignupPages.txt_thongbao_1(driver).getText());
         System.out.println("-----------------------");
+    }
+
+    @Then("user login bằng API và kiểm tra token trả về")
+    public void user_login_bằng_api_và_kiểm_tra_token_trả_về(io.cucumber.datatable.DataTable dataTable) {
+        List<Map<String,String>> datacheck = dataTable.asMaps(String.class,String.class);
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        String token = given().
+                header("Content-Type", "application/json").
+                body("{\n" +
+                        "    \"email\": \"" + datacheck.get(0).get("username") + "\",\n" +
+                        "    \"password\": \"" + datacheck.get(0).get("password") + "\"\n" +
+                        "}").
+                when().
+                post("/users/login").
+                then().statusCode(200).
+                log().body().
+                extract().path("token").toString();
+        System.out.println("Token is :" + token);
+        if(token.equals(token)){
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS,"Token is :" + token);
+        }else{
+            ExtentCucumberAdapter.getCurrentStep().log(Status.FAIL,"đăng nhập thất bại");
+        }
+    }
+
+    @Then("user login bằng API và kiểm tra thông tin user")
+    public void user_login_bằng_api_và_kiểm_tra_thông_tin_user(io.cucumber.datatable.DataTable dataTable) {
+        List<Map<String,String>> datacheck = dataTable.asMaps(String.class,String.class);
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        String token = given().
+                header("Content-Type", "application/json").
+                body("{\n" +
+                        "    \"email\": \"" + datacheck.get(0).get("username") + "\",\n" +
+                        "    \"password\": \"" + datacheck.get(0).get("password") + "\"\n" +
+                        "}").
+                when().
+                post("/users/login").
+                then().
+                log().body().
+                extract().path("token").toString();
+        /////////////////////////////////////////////////
+        String body  =     given().
+                           header("Authorization", token).
+                           when().get("/users/me").
+                           then().
+                           statusCode(200).
+                           log().
+                           body().
+                           toString();
+        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS,"body is :" + body);
+
+    }
+
+    @When("user thực hiện update thông tin user")
+    public void user_thực_hiện_update_thông_tin_user(io.cucumber.datatable.DataTable dataTable) {
+        List<Map<String,String>> datacheck = dataTable.asMaps(String.class,String.class);
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        String token = given().
+                header("Content-Type", "application/json").
+                body("{\n" +
+                        "    \"email\": \"" + datacheck.get(0).get("username") + "\",\n" +
+                        "    \"password\": \"" + datacheck.get(0).get("password") + "\"\n" +
+                        "}").
+                when().
+                post("/users/login").
+                then().
+                log().body().
+                extract().path("token").toString();
+        /////////////////////////////////////////////////
+        String body = given().
+                header("Content-Type", "application/json").
+                header("Authorization", token).
+                body("{\n" +
+                        "    \"firstName\": \""+ datacheck.get(0).get("firstName") +"\",\n" +
+                        "    \"lastName\": \""+ datacheck.get(0).get("lastName") +"\",\n" +
+                        "    \"email\": \""+ datacheck.get(0).get("email") +"\",\n" +
+                        "    \"password\": \""+ datacheck.get(0).get("password") +"\"\n" +
+                        "}").
+                when().patch("/users/me").
+                then().
+                log().body().statusCode(200).toString();
+        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS,"body update is :" + body);
+
+
+    }
+
+    @Then("user thực hiện dăng nhập và kiểm tra lại thông tin")
+    public void user_thực_hiện_dăng_nhập_và_kiểm_tra_lại_thông_tin(io.cucumber.datatable.DataTable dataTable) {
+        List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
+        this.driver = StepUpSteps.driver;
+        driver.get("https://thinking-tester-contact-list.herokuapp.com/");
+        LoginPages.username(driver).sendKeys(data.get(0).get("username_update"));
+        LoginPages.password(driver).sendKeys(data.get(0).get("password_update"));
+        ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            System.out.println("got interrupted!");
+        }
+        ///////////
     }
 
 }

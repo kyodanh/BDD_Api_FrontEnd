@@ -309,7 +309,7 @@ public class HomeSteps {
         if (DetailsPages.txt_detail(driver).isDisplayed() == true) {
             System.out.println("hệ thống chuyển qua màn hình " + DetailsPages.txt_detail(driver).getText());
             ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, ContactListPages.txt_contact(driver).getText());
-//            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
         } else {
             Assert.fail("loi");
             ExtentCucumberAdapter.getCurrentStep().log(Status.FAIL, "hệ thống không chuyển qua màn hình detail");
@@ -330,7 +330,7 @@ public class HomeSteps {
         if (DetailsPages.txt_detail(driver).isDisplayed() == true) {
             System.out.println("hệ thống chuyển qua màn hình " + DetailsPages.txt_detail(driver).getText());
             ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, DetailsPages.detail(driver).getText());
-//            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
         } else {
             Assert.fail("loi");
             ExtentCucumberAdapter.getCurrentStep().log(Status.FAIL, "Hệ thống hiển thị thông tin");
@@ -346,7 +346,7 @@ public class HomeSteps {
         if (DetailsPages.txt_detail(driver).isDisplayed() == true) {
             System.out.println("hệ thống chuyển qua màn hình " + DetailsPages.txt_detail(driver).getText());
             ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, DetailsPages.detail(driver).getText());
-//            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
+            ExtentCucumberAdapter.getCurrentStep().log(Status.PASS, MediaEntityBuilder.createScreenCaptureFromBase64String(getBase64Screenshot()).build());
         } else {
             Assert.fail("loi");
             ExtentCucumberAdapter.getCurrentStep().log(Status.FAIL, "hệ thống không chuyển qua màn hình detail");
