@@ -52,6 +52,29 @@ public class HomeSteps {
 
     }
 
+    @Then("user logout")
+    public void user_logout() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        String body = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token()).
+                when().
+                get("users/me").
+//                post("/users/logout").
+                then().
+                log().body().statusCode(200).toString();
+        System.out.println("print"+body);
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            System.out.println("got interrupted!");
+        }
+        ///////////
+    }
+
+
     @When("user đăng nhập vào web")
     public void user_đăng_nhập_vào_web(io.cucumber.datatable.DataTable dataTable) {
         // Write code here that turns the phrase above into concrete actions
