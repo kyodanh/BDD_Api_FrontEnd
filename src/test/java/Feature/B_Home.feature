@@ -152,5 +152,10 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
     Then user logout
 
 
-
+  @Res2
+  Scenario: user thực hiện logout
+    Given Khi user đăng nhập thành công
+    When Hệ thống hiển thị token của user
+    And user thực hiện update user đăng nhập
+    Then user logout
 
