@@ -221,7 +221,7 @@ public class LoginSteps {
                         "    \"password\": \"" + datacheck.get(0).get("password_moi") + "\"\n" +
                         "}").
                 when().
-                post("/users/login").
+                get("/users/login").
                 then().
                 log().body().
                 extract().path("token").toString();
