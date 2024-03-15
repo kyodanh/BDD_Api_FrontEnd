@@ -52,6 +52,29 @@ public class HomeSteps {
 
     }
 
+    @Then("user logout")
+    public void user_logout() {
+        // Write code here that turns the phrase above into concrete actions
+        this.driver = StepUpSteps.driver;
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        String body = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token()).
+                when().
+                get("users/me").
+//                post("/users/logout").
+                then().
+                log().body().statusCode(200).toString();
+        System.out.println("print"+body);
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            System.out.println("got interrupted!");
+        }
+        ///////////
+    }
+
+
     @When("user đăng nhập vào web")
     public void user_đăng_nhập_vào_web(io.cucumber.datatable.DataTable dataTable) {
         // Write code here that turns the phrase above into concrete actions
@@ -763,6 +786,12 @@ public class HomeSteps {
         String data = given().
                 header("Content-Type", "application/json").
                 header("Authorization", "Bearer " + token()).
+                body("{\n" +
+                        "    \"firstName\": \"Updated\",\n" +
+                        "    \"lastName\": \"Username\",\n" +
+                        "    \"email\": \"kyodanh@gmail.com\",\n" +
+                        "    \"password\": \"1234567\"\n" +
+                        "}").
                 when().
                 get("/contacts").
                 then().
@@ -776,6 +805,27 @@ public class HomeSteps {
         // Write code here that turns the phrase above into concrete actions
         this.driver = StepUpSteps.driver;
         ContactListPages.clm_name(driver,name).click();
+    }
+
+
+    @When("user thực hiện update user đăng nhập")
+    public void user_thực_hiện_update_user_đăng_nhập() {
+        this.driver = StepUpSteps.driver;
+        baseURI = "https://thinking-tester-contact-list.herokuapp.com";
+        String data = given().
+                header("Content-Type", "application/json").
+                header("Authorization", "Bearer " + token()).
+                body("{\n" +
+                        "    \"firstName\": \"Updated\",\n" +
+                        "    \"lastName\": \"Username\",\n" +
+                        "    \"email\": \"kyodanh@gmail.com\",\n" +
+                        "    \"password\": \"1234567\"\n" +
+                        "}").
+                when().
+                patch("/users/me").
+                then().
+                log().body().toString();
+        System.out.println("boddy1" + data);
     }
 
 

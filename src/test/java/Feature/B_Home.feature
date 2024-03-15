@@ -145,6 +145,17 @@ Feature: Thực hiện kiểm tra màn hình danh sách và API của page danh 
     And user thực hiện xóa contact bàng API
     Then contact bị xóa và khi call API xem chi tiết hệ thống không hiển thị contact
 
+  @Res1
+  Scenario: user thực hiện logout
+    Given Khi user đăng nhập thành công
+    When Hệ thống hiển thị token của user
+    Then user logout
 
 
+  @Res2
+  Scenario: user thực hiện logout
+    Given Khi user đăng nhập thành công
+    When Hệ thống hiển thị token của user
+    And user thực hiện update user đăng nhập
+    Then user logout
 
