@@ -591,10 +591,10 @@ public class HomeSteps {
                 when().
                 get("/contacts").
                 then().
-                log().body().extract().jsonPath().getString("[0]._id");
+                    log().body().extract().jsonPath().getString("[0]._id");
         //////////////////////////////////Detail contact
         String data_contact = given().
-                header("Content-Type", "application/json").
+                header("Content-Type", "application/js  on").
                 header("Authorization", "Bearer " + token).
                 when().
                 get("/contacts/" + data).
