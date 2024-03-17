@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
         glue = {"Steps"},
         tags = "@Res",
         monochrome=true,
-        dryRun = true,
         plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:","json:target/report.json"})
 
 public class TestRunner_Res {
